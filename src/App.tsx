@@ -7,6 +7,11 @@ function App() {
   // This creates a state variable named "count".
   // It starts at 0, and we get a function "setCount" to change it.
   const [count, setCount] = useState(0);
+  // --- ADD THIS NEW STATE ---
+  // We'll use a boolean (true or false) to track visibility.
+  // Let's start with it being visible, so we'll set the initial value to true.
+  const [showProfiles, setShowProfiles] = useState(true);
+  // --------------------------
 
   // --- ADD THIS ARRAY OF DATA ---
   const people = [
@@ -56,6 +61,29 @@ function App() {
 
       <h2>Welcome to Your React Sandbox!</h2>
       <p>This is your starting point. Let's build something great.</p>
+
+      {/* --- ADD THIS BUTTON --- */}
+      <div className="card">
+        <button onClick={() => setShowProfiles(!showProfiles)}>
+          {showProfiles ? 'Hide Profiles' : 'Show Profiles'}
+        </button>
+      </div>
+      {/* ----------------------- */}
+
+      {/* --- ADD THE CONDITIONAL WRAPPER --- */}
+      {showProfiles && (
+        <div>
+          {people.map(person => (
+            <ProfileCard
+              key={person.name}
+              name={person.name}
+              jobTitle={person.jobTitle}
+              avatarUrl={person.avatarUrl}
+            />
+          ))}
+        </div>
+      )}
+      {/* ------------------------------------- */}
     </div>
   );
 }
