@@ -1,43 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
-import ProfileCard from './components/ProfileCard';
-import AddProfileForm from './components/AddProfileForm'; // <-- Import the new form
-import { initialPeople } from './data'; // <-- ADD THIS LINE
-
-// --- You can move the initial data outside the component ---
-// The initialPeople constant that used to be here is now gone.
+import ProfileCard, { type ProfileCardProps } from './components/ProfileCard';
+import AddProfileForm from './components/AddProfileForm';
+import ProfileList from './components/ProfileList';
 
 function App() {
-  // This creates a state variable named "count".
-  // It starts at 0, and we get a function "setCount" to change it.
   const [count, setCount] = useState(0);
-  // --- ADD THIS NEW STATE ---
-  // We'll use a boolean (true or false) to track visibility.
-  // Let's start with it being visible, so we'll set the initial value to true.
   const [showProfiles, setShowProfiles] = useState(true);
-  // --------------------------
 
-  // --- 1. Move the people array into state ---
-  const [people, setPeople] = useState(initialPeople);
+  const [people, setPeople] = useState<ProfileCardProps[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // --- 2. Create the function to add a person ---
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => response.json())
+      // Tell TypeScript that "data" is an array of objects of "any" type for now.
+      // This is a quick way to solve this specific error.
+      .then((data: any[]) => {
+        const formattedData = data.map(user => ({
+          name: user.name,
+          jobTitle: user.email,
+          avatarUrl: `https://i.pravatar.cc/150?u=${user.id}`
+        }));
+        setPeople(formattedData);
+        setIsLoading(false);
+      });
+  }, []);
+
   const handleAddProfile = (name: string) => {
     const newProfile = {
       name: name,
       jobTitle: 'New Team Member',
-      avatarUrl: `https://i.pravatar.cc/150?u=${name}`, // Random avatar based on name
+      avatarUrl: `https://i.pravatar.cc/150?u=${name}`,
     };
-    // We use the state updater function, creating a NEW array
-    // by spreading the old one and adding the new profile.
     setPeople([...people, newProfile]);
   };
 
   return (
     <div>
-      <Header title="Learning About State!" />
+      <Header title="Fetching Data!" />
 
-      {/* Use our new component! */}
       <div>
         {people.map(person => (
           <ProfileCard
@@ -50,42 +53,26 @@ function App() {
       </div> 
       
 
-      {/* START of new section */}
       <div className="card">
         <p>You have clicked the button {count} times.</p>
         <button onClick={() => setCount(count + 1)}>
           Click me
         </button>
       </div>
-      {/* END of new section */}
 
       <h2>Welcome to Your React Sandbox!</h2>
       <p>This is your starting point. Let's build something great.</p>
 
-      {/* --- ADD THIS BUTTON --- */}
       <div className="card">
         <button onClick={() => setShowProfiles(!showProfiles)}>
           {showProfiles ? 'Hide Profiles' : 'Show Profiles'}
         </button>
       </div>
-      {/* ----------------------- */}
 
-      {/* --- ADD THE CONDITIONAL WRAPPER --- */}
       {showProfiles && (
-        <div>
-          {people.map(person => (
-            <ProfileCard
-              key={person.name}
-              name={person.name}
-              jobTitle={person.jobTitle}
-              avatarUrl={person.avatarUrl}
-            />
-          ))}
-        </div>
+        <ProfileList isLoading={isLoading} people={people} />
       )}
-      {/* ------------------------------------- */}
 
-      {/* --- Pass the function down as a prop --- */}
       <AddProfileForm onAddProfile={handleAddProfile} />
     </div>
   );

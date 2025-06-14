@@ -1,7 +1,7 @@
 import './ProfileCard.css';
 
 // Define the blueprint for the data this component needs.
-interface ProfileCardProps {
+export interface ProfileCardProps {
   name: string;
   jobTitle: string;
   avatarUrl: string; // The URL for the person's picture
