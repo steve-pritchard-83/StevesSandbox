@@ -3,13 +3,10 @@ import './App.css';
 import Header from './components/Header';
 import ProfileCard from './components/ProfileCard';
 import AddProfileForm from './components/AddProfileForm'; // <-- Import the new form
+import { initialPeople } from './data'; // <-- ADD THIS LINE
 
 // --- You can move the initial data outside the component ---
-const initialPeople = [
-  { name: 'Steve Pritchard', jobTitle: 'Learning React', avatarUrl: 'https://i.pravatar.cc/150?u=steve' },
-  { name: 'Jane Doe', jobTitle: 'Senior Engineer', avatarUrl: 'https://i.pravatar.cc/150?u=jane' },
-  { name: 'John Smith', jobTitle: 'Project Manager', avatarUrl: 'https://i.pravatar.cc/150?u=john' },
-];
+// The initialPeople constant that used to be here is now gone.
 
 function App() {
   // This creates a state variable named "count".
