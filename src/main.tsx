@@ -4,7 +4,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import App from './App.tsx'; // We will create this layout component next
 import HomePage from './pages/HomePage.tsx';
-import AboutPage from './pages/AboutPage.tsx';
 import './index.css';
 
 // 1. Define the routes for our application
@@ -16,10 +15,6 @@ const router = createBrowserRouter([
       {
         path: '/', // The "index" route
         element: <HomePage />,
-      },
-      {
-        path: 'about',
-        element: <AboutPage />,
       },
     ],
   },

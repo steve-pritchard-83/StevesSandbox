@@ -5,7 +5,6 @@ function App() {
     <div>
       <nav className="navbar">
         <Link to="/" className="nav-link">Home</Link>
-        <Link to="/about" className="nav-link">About</Link>
       </nav>
       
       <main>
