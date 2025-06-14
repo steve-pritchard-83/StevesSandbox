@@ -5,7 +5,7 @@ import ProfileCard, { type ProfileCardProps } from '../components/ProfileCard';
 import AddProfileForm from '../components/AddProfileForm';
 import ProfileList from '../components/ProfileList';
 
-function App() {
+function HomePage() {
   const [count, setCount] = useState(0);
   const [showProfiles, setShowProfiles] = useState(true);
 
@@ -78,4 +78,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomePage;
