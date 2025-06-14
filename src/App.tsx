@@ -2,6 +2,14 @@ import { useState } from 'react';
 import './App.css';
 import Header from './components/Header';
 import ProfileCard from './components/ProfileCard';
+import AddProfileForm from './components/AddProfileForm'; // <-- Import the new form
+
+// --- You can move the initial data outside the component ---
+const initialPeople = [
+  { name: 'Steve Pritchard', jobTitle: 'Learning React', avatarUrl: 'https://i.pravatar.cc/150?u=steve' },
+  { name: 'Jane Doe', jobTitle: 'Senior Engineer', avatarUrl: 'https://i.pravatar.cc/150?u=jane' },
+  { name: 'John Smith', jobTitle: 'Project Manager', avatarUrl: 'https://i.pravatar.cc/150?u=john' },
+];
 
 function App() {
   // This creates a state variable named "count".
@@ -13,25 +21,20 @@ function App() {
   const [showProfiles, setShowProfiles] = useState(true);
   // --------------------------
 
-  // --- ADD THIS ARRAY OF DATA ---
-  const people = [
-    {
-      name: 'Steve Pritchard',
-      jobTitle: 'Learning React',
-      avatarUrl: 'https://i.pravatar.cc/150?u=steve',
-    },
-    {
-      name: 'Jane Doe',
-      jobTitle: 'Senior Engineer',
-      avatarUrl: 'https://i.pravatar.cc/150?u=jane',
-    },
-    {
-      name: 'John Smith',
-      jobTitle: 'Project Manager',
-      avatarUrl: 'https://i.pravatar.cc/150?u=john',
-    },
-  ];
-  // ---------------------------------
+  // --- 1. Move the people array into state ---
+  const [people, setPeople] = useState(initialPeople);
+
+  // --- 2. Create the function to add a person ---
+  const handleAddProfile = (name: string) => {
+    const newProfile = {
+      name: name,
+      jobTitle: 'New Team Member',
+      avatarUrl: `https://i.pravatar.cc/150?u=${name}`, // Random avatar based on name
+    };
+    // We use the state updater function, creating a NEW array
+    // by spreading the old one and adding the new profile.
+    setPeople([...people, newProfile]);
+  };
 
   return (
     <div>
@@ -47,7 +50,7 @@ function App() {
             avatarUrl={person.avatarUrl}
           />
         ))}
-      </div>
+      </div> 
       
 
       {/* START of new section */}
@@ -84,6 +87,9 @@ function App() {
         </div>
       )}
       {/* ------------------------------------- */}
+
+      {/* --- Pass the function down as a prop --- */}
+      <AddProfileForm onAddProfile={handleAddProfile} />
     </div>
   );
 }
